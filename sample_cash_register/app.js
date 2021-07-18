@@ -41,6 +41,10 @@ var vm = new Vue({
     totalPriceWithTax: function () {
       // 算出プロパティに依存した算出プロパティも定義できる
       return Math.floor(this.totalPrice * 1.08)
+    },
+    canBuy: function () {
+      // 1000円以上から購入可能のする
+      return this.totalPrice >= 1000
     }
   }
 })
