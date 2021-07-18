@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My vue app title</title>
+  <script src="https://unpkg.com/vue@2.5.17"></script>
+  <!-- vbind:属性名="データを展開した属性値"で -->
+  <!-- <button id="b-button" v-bind:title="loggedInButton">購入</button> -->
+  <button id="b-button" v-bind:disabled="!canBuy">購入</button>
+  <script>
+    var vm = new Vue({
+      el: '#b-button',
+      data: {
+        loggedInButton: 'ログイン済のため購入できます。',
+        canBuy: false
+      }
+    })
+  </script>
+</head>
+<body>
+  <h1>Vue.js</h1>
+  <div id="app">
+
+  </div>
+  <script>
+    // ロードされ、Vueがグローバル変数として定義されているか確認
+    console.assert(typeof Vue !== 'undefined');
+  </script>
+</body>
+</html>
