@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My vue app title</title>
+  <script src="https://unpkg.com/vue@2.5.17"></script>
+</head>
+<body>
+  <h1>Vue.js</h1>
+  <div id="app">
+    <!-- data: {arr: ['い', 'ろ', 'は']}を定義しておく -->
+    <ul>
+      <li v-for="item in arr" v-bind:key="item">{{item}}</li>
+    </ul>
+  </div>
+
+  <script>
+    // ロードされ、Vueがグローバル変数として定義されているか確認
+    console.assert(typeof Vue !== 'undefined');
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        arr: ['い', 'ろ', 'は']
+      },
+    })
+  </script>
+</body>
+</html>
