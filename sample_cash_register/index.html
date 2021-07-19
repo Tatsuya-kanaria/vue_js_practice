@@ -15,7 +15,9 @@
           <!-- v-onでイベントが発生した時に属性値で指定した式を評価する -->
           <!-- {{ item.name }}の個数: <input type="number" v-on:input="item.quantity = $event.target.value" v-bind:value="item.quantity" min="0"> -->
           <!-- v-onディレクティブの引数をinputからchangeに変更した -->
-          {{ item.name }}の個数: <input type="number" v-on:change="item.quantity = $event.target.value" v-bind:value="item.quantity" min="0">
+          <!-- {{ item.name }}の個数: <input type="number" v-on:change="item.quantity = $event.target.value" v-bind:value="item.quantity" min="0"> -->
+          <!-- v-onディレクティブの代わりにv-modelを使う(.lazy===change) -->
+          {{ item.name }}の個数: <input type="number" v-model.lazy="item.quantity" min="0">
           {{ item.name }}: {{ item.price }} × {{ item.quantity }} = {{ item.price * item.quantity | numberWithDelimiter}}円
         </li>
       </ul>
