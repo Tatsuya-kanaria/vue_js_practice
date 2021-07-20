@@ -1,40 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My vue app title</title>
+  <title>Vue.Stationery store</title>
   <script src="https://unpkg.com/vue@2.5.17"></script>
 </head>
 <body>
   <h1>sample cash register app</h1>
   <div id="app">
+    <ul>
+      <!-- 各商品の単価と購入個数をリスト表示する -->
+      <li v-for="item in items" v-bind:key="item.name">
+        <!-- v-onでイベントが発生した時に属性値で指定した式を評価する -->
+        <!-- {{ item.name }}の個数: <input type="number" v-on:input="item.quantity = $event.target.value" v-bind:value="item.quantity" min="0"> -->
+        <!-- v-onディレクティブの引数をinputからchangeに変更した -->
+        <!-- {{ item.name }}の個数: <input type="number" v-on:change="item.quantity = $event.target.value" v-bind:value="item.quantity" min="0"> -->
+        <!-- v-onディレクティブの代わりにv-modelを使う(.lazy===change) -->
+        {{ item.name }}の個数: <input type="number" v-model.lazy="item.quantity" min="0">
+        {{ item.name }}: {{ item.price }} × {{ item.quantity }} = {{ item.price * item.quantity | numberWithDelimiter}}円
+      </li>
+    </ul>
+    <hr>
     <!-- 1000円以上になるまで、赤く表示する(v-bind:style) -->
-    <div :style="errorMessageStyle">
+    <div v-bind:style="errorMessageStyle">
       <ul>
-        <!-- 各商品の単価と購入個数をリスト表示する -->
         <li v-for="item in items" v-bind:key="item.name">
-          <!-- v-onでイベントが発生した時に属性値で指定した式を評価する -->
-          <!-- {{ item.name }}の個数: <input type="number" v-on:input="item.quantity = $event.target.value" v-bind:value="item.quantity" min="0"> -->
-          <!-- v-onディレクティブの引数をinputからchangeに変更した -->
-          <!-- {{ item.name }}の個数: <input type="number" v-on:change="item.quantity = $event.target.value" v-bind:value="item.quantity" min="0"> -->
-          <!-- v-onディレクティブの代わりにv-modelを使う(.lazy===change) -->
-          {{ item.name }}の個数: <input type="number" v-model.lazy="item.quantity" min="0">
-          {{ item.name }}: {{ item.price }} × {{ item.quantity }} = {{ item.price * item.quantity | numberWithDelimiter}}円
+          {{ item.name }}: {{ item.price }} × {{ item.quantity }} = {{ item.price * item.quantity | numberWithDelimiter }}円
         </li>
       </ul>
-      <hr>
-      <div v-bind:style="errorMessageStyle">
-        <ul>
-          <li v-for="item in items" v-bind:key="item.name">
-            {{ item.name }}: {{ item.price }} × {{ item.quantity }} = {{ item.price * item.quantity | numberWithDelimiter }}円
-          </li>
-        </ul>
-      </div>
-      <p>{{ items[0].name }}: {{ items[0].price }} × {{ items[0].quantity }}</p>
+      <p>
+        {{ items[0].name }}: {{ items[0].price }} × {{ items[0].quantity }}
+      </p>
       <p>小計: {{ totalPrice | numberWithDelimiter }}円</p>
-      <p>合計(税込): {{ totalPriceWithTax | numberWithDelimiter }}円</p>
+      <p>
+        合計(税込): {{ totalPriceWithTax | numberWithDelimiter }}円
+      </p>
       <p v-show="!canBuy">
         {{ 1000 | numberWithDelimiter }}円以上からご購入いただけます
       </p>
+      <!-- ボタンが押されたら、メソッドを呼び出す -->
+      <button v-bind:disabled="!canBuy" v-on:click="doBuy">購入</button>
     </div>
   </div>
 
