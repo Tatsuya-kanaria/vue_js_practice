@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My vue app title</title>
+  <script src="https://unpkg.com/vue@2.5.17"></script>
+  <style>
+    .header h1 {
+      width: 100%;
+      height: 30px;
+      background-color: #f1f1f1;
+      border: 1px solid #d3d3d3;
+      padding: 30px 15px;
+    }
+
+    .content li {
+      width: 100%;
+      height: 30px;
+      padding: 30px 15px;
+      background-color: white;
+      border: 1px solid #d3d3d3;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <page-header class="header">
+      <h1 slot="header">
+        ヘッダーコンテンツ
+      </h1>
+    </page-header>
+    <page-content class="content">
+      <ul slot="content">
+        <li>コンテンツ1</li>
+        <li>コンテンツ2</li>
+      </ul>
+    </page-content>
+  </div>
+  <script>
+    // ロードされ、Vueがグローバル変数として定義されているか確認
+    console.assert(typeof Vue !== 'undefined');
+
+    var headerTemplate = `
+      <div>
+        <slot name="header">No title</slot>
+      </div>
+    `
+    var contentTemplate = `
+      <div name="content">
+        <slot name="content">No contents</slot>
+      </div>
+    `
+
+    Vue.component('page-header', {
+      template: headerTemplate
+    })
+    Vue.component('page-content', {
+      template: contentTemplate
+    })
+
+    new Vue({
+      el: "#app"
+    })
+  </script>
+</body>
+</html>
