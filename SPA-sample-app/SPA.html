@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vue.js SPAのサンプルアプリケーション</title>
+  <!-- Vue.js本体と Vue Router の読み込み -->
+  <script src="https://unpkg.com/vue@2.5.17"></script>
+  <script src="https://unpkg.com/vue-router@3.0.1"></script>
+  <style>
+    /*https://jp.vuejs.org/v2/api/index.html#vcloak*/
+    [v-cloak] {
+      display: none
+    }
+  </style>
+</head>
+<body>
+  <h1>Vue.js</h1>
+  <div id="app">
+    <nav v-cloak>
+      <!-- router-link によるナビゲーション定義 -->
+      <router-link to="/top">トップページ</router-link>
+      <router-link to="/users">ユーザー一覧ページ</router-link>
+      <router-link to="/users/new?redirect=true">新規ユーザー登録</router-link>
+      <router-link to="/login" v-show="!Auth.loggedIn()">ログイン</router-link>
+      <router-link to="/logout" v-show="Auth.loggedIn()">ログアウト</router-link>
+    </nav>
+    <router-view></router-view>
+  </div>
+
+  <script>
+    // ロードされ、Vueがグローバル変数として定義されているか確認
+    console.assert(typeof Vue !== 'undefined');
+  </script>
+
+  <!-- コンポーネントのテンプレート定義 -->
+  <!-- ユーザー一覧のテンプレート -->
+  <script type="text/X-template" id="user-list">
+    <div>
+      <div class="loading" v-if="loading">読み込み中…</div>
+      <div v-if="error" class="error">
+        {{ error }}
+      </div>
+
+      <!-- users がロードされたら各ユーザーの名前を表示する -->
+      <div v-for="user in users" :key="user.id">
+        <router-link :to="{ path: '/users/' + user.id }">{{ user.name }}</router-link>
+      </div>
+    </div>
+  </script>
+
+  <!-- ユーザー詳細ページのテンプレート -->
+  <script type="text/x-template" id="user-detail">
+    <div>
+      <div class="loading" v-if="loading">読み込み中…</div>
+      <div v-if="error" class="error">
+        {{ error }}
+      </div>
+      <div v-if="user">
+        <h2>{{ user.name }}</h2>
+        <p>{{ user.description }}</p>
+      </div>
+    </div>
+  </script>
+
+  <!-- ユーザー作成ページのテンプレート -->
+  <script type="text/x-template" id="user-create">
+    <div>
+      <div class="sending" v-if="sending">Senging…</div>
+      <div>
+        <h2>新規ユーザー作成</h2>
+        <div>
+          <label>名前: </label>
+          <input type="text" v-model="user.name">
+        </div>
+        <div>
+          <label>説明文: </label>
+          <textarea v-model="user.description"></textarea>
+        </div>
+        <div v-if="error" class="error">
+          {{ error }}
+        </div>
+        <div>
+          <input type="button" @click="createUser" value="送信">
+        </div>
+      </div>
+    </div>
+  </script>
+
+  <!-- ユーザーログインページのテンプレート -->
+  <script type="text/x-template" id="login">
+    <div>
+      <h2>Login</h2>
+      <p v-if="$route.query.redirect">
+        ログインしてください
+      </p>
+      <form @submit.prevent="login">
+        <label><input v-model="email" placeholder="email"></label><br>
+        <label><input v-model="pass" placeholder="password" type="password"></label><br>
+        <button type="submit">ログイン</button>
+        <p v-if="error" class="error">ログインに失敗しました</p>
+      </form>
+    </div>
+  </script>
+
+  <script src="auth.js"></script>
+  <script src="data/userData.js"></script>
+  <script src="user/getUsers.js"></script>
+  <script src="user/getUser.js"></script>
+  <script src="user/postUser.js"></script>
+  <script src="Login.js"></script>
+  <script src="user/UserList.js"></script>
+  <script src="user/UserDetail.js"></script>
+  <script src="user/UserCreate.js"></script>
+
+  <script src="router.js"></script>
+  <script>
+    var app = new Vue({
+      data: {
+        Auth: Auth
+      },
+
+      router: router
+    }).$mount('#app')
+  </script>
+</body>
+</html>
